@@ -1,4 +1,4 @@
-#!/Users/amysikora/Desktop/tvg-backend-only/venv/bin/python3
+#!/Users/amysikora/Desktop/tvg-backend-only/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
