@@ -55,10 +55,6 @@ def is_valid_http_url(url: str) -> bool:
 
 
 def maybe_apply_affiliate_link(url: str) -> Tuple[str, bool]:
-    """
-    Placeholder for future affiliate logic.
-    For now, return the original URL unchanged.
-    """
     return url, False
 
 
@@ -137,9 +133,7 @@ def init_db() -> None:
         db.create_all()
 
 
-init_db()
-
-
 if __name__ == "__main__":
+    init_db()
     port = int(os.environ.get("PORT", 5001))
     app.run(host="0.0.0.0", port=port, debug=False)
