@@ -113,20 +113,24 @@ def outbound_redirect():
 
 @app.route("/logs", methods=["GET"])
 def logs():
-    rows = ClickLog.query.order_by(ClickLog.timestamp.desc()).limit(25).all()
-    return jsonify([
-        {
-            "id": row.id,
-            "timestamp": row.timestamp.isoformat() if row.timestamp else None,
-            "destination_url": row.destination_url,
-            "normalized_url": row.normalized_url,
-            "final_url": row.final_url,
-            "source": row.source,
-            "referrer": row.referrer,
-            "user_agent": row.user_agent,
-        }
-        for row in rows
-    ]), 200
+    try:
+        rows = ClickLog.query.order_by(ClickLog.timestamp.desc()).limit(25).all()
+        return jsonify([
+            {
+                "id": row.id,
+                "timestamp": row.timestamp.isoformat() if row.timestamp else None,
+                "destination_url": row.destination_url,
+                "normalized_url": row.normalized_url,
+                "final_url": row.final_url,
+                "source": row.source,
+                "referrer": row.referrer,
+                "user_agent": row.user_agent,
+            }
+            for row in rows
+        ]), 200
+    except Exception as error:
+        app.logger.error("Failed to load logs: %s", error)
+        return jsonify({"error": "Could not load logs"}), 500
 
 
 def init_db() -> None:
