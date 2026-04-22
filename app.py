@@ -138,3 +138,12 @@ if __name__ == "__main__":
     init_db()
     port = int(os.environ.get("PORT", 5001))
     app.run(host="0.0.0.0", port=port, debug=False)
+
+@app.route("/init-db", methods=["GET"])
+def init_db_route():
+    try:
+        db.create_all()
+        return jsonify({"status": "initialized"}), 200
+    except Exception as error:
+        app.logger.error("Failed to initialize database: %s", error)
+        return jsonify({"error": "Database init failed"}), 500
