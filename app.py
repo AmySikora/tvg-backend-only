@@ -20,7 +20,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-
 class ClickLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(
@@ -41,7 +40,9 @@ class ClickLog(db.Model):
 
     def __repr__(self):
         return f"<ClickLog {self.id} {self.destination_url}>"
-
+    
+    with app.app_context():
+        db.create_all()
 
 def normalize_url(url: str) -> str:
     return str(url or "").strip()
@@ -131,12 +132,9 @@ def logs():
     except Exception as error:
         app.logger.error("Failed to load logs: %s", error)
         return jsonify({"error": "Could not load logs"}), 500
-
-
 def init_db() -> None:
     with app.app_context():
         db.create_all()
-
 
 if __name__ == "__main__":
     init_db()
