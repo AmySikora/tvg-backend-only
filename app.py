@@ -17,7 +17,6 @@ if database_url.startswith("postgres://"):
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-
 db = SQLAlchemy(app)
 
 class ClickLog(db.Model):
@@ -48,6 +47,7 @@ with app.app_context():
 
 def normalize_url(url: str) -> str:
     return str(url or "").strip()
+
 
 def is_valid_http_url(url: str) -> bool:
     try:
@@ -132,7 +132,10 @@ def logs():
         ]), 200
     except Exception as error:
         app.logger.error("Failed to load logs: %s", error)
+        
         return jsonify({"error": "Could not load logs"}), 500
+
+
 def init_db() -> None:
     with app.app_context():
         db.create_all()
