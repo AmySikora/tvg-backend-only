@@ -40,13 +40,14 @@ class ClickLog(db.Model):
 
     def __repr__(self):
         return f"<ClickLog {self.id} {self.destination_url}>"
-    
-    with app.app_context():
-        db.create_all()
+
+
+with app.app_context():
+    db.create_all()
+
 
 def normalize_url(url: str) -> str:
     return str(url or "").strip()
-
 
 def is_valid_http_url(url: str) -> bool:
     try:
